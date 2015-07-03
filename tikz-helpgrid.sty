@@ -1,0 +1,43 @@
+%% Helpgrid for LaTeX/TikZ
+%%
+%% Secondary Author: Abid H. Mujtaba
+%%
+%% This is basically a repackaging (and slight tweaking) of an off-the cuff solution given by:
+%% Sébastien Gross  <seb•ɑƬ•chezwam•ɖɵʈ•org>
+%%
+%% on his github page at: https://github.com/renard/tikz-dimline inside the file tikz-dimline-doc.tex
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tikz-helpgrid}[2015/06/26 v1.0 initial version]
+
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+
+\makeatletter
+
+    \newcommand{\helpgrid@do@nothing}[1]{#1}%
+    \newcommand{\helpgrid}[4]{%
+    \pgfplotsifinaxis{%
+        \let\helpgrid@internal\pgfplotsextra%
+    }{%
+        \let\helpgrid@internal\helpgrid@do@nothing%
+    }%
+
+    \begin{scope}
+
+        \coordinate (a) at (#1,#2) {};
+        \coordinate (b) at (#3,#4) {};
+
+        \draw[step=1,black!10,very thin] (a) grid (b);
+        
+        \foreach \x in {#1,...,#3}
+        \node[anchor=north,black!20] at (\x, 0) {\tiny{\x}};
+
+        \foreach \y in {#2,...,#4}
+        \node[anchor=east,black!20] at (0, \y) {\texttt{\tiny{$\y$}}};
+    \end{scope}
+    }%
+
+\makeatother
+
+\endinput
